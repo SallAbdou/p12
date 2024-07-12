@@ -1,49 +1,29 @@
-// Page de test de Recharts 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import {BarChart, Bar, XAxis,  YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,} from 'recharts';
+import ActivityChart from '../components/ActivityChart';
+import AverageSessionsChart from '../components/Session';
+import { getActivityByUserId, getAverageSessionsByUserId } from '../utils/apiHandler';
+import { useGet } from '../utils/hooks';
+import '../styles/UserPage.scss';
 
 function UserPage() {
-  const { id } = useParams(); 
-  const [userActivity, setUserActivity] = useState(null);
+  const { id } = useParams();
+  const userActivity = useGet(getActivityByUserId(id));
+  const userAverageSessions = useGet(getAverageSessionsByUserId(id)); 
 
-  useEffect(() => {
-    const fetchUserActivity = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/user/${id}/activity`);
-        const data = await response.json();
-        console.log('Fetched user activity:', data);
-        if (data && data.data && data.data.sessions) {
-          setUserActivity(data.data.sessions); 
-        }
-      } catch (error) {
-        console.error('Error fetching user activity:', error);
-      } 
-    };
+  if (userActivity.error || userAverageSessions.error) {
+    return <p>No user data found.</p>;
+  }
 
-    fetchUserActivity();
-  }, [id]);
-
-
-  if (!userActivity) {
-    return <p>No user activity data found.</p>; 
+  if (userActivity.isLoading || userAverageSessions.isLoading) {
+    return <p>Loading...</p>;
   }
 
   return (
-    <div>
-      <h2>Activité Quotidienne</h2>
-      <ResponsiveContainer width={500} height={400}>
-        <BarChart data={userActivity} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="kilogram" fill="#282D30" name="Poids (kg)" />
-          <Bar dataKey="calories" fill="#E60000" name="Calories brûlées (kCal)" />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <section className='charts'>
+      <ActivityChart data={userActivity.data.sessions} />
+      <AverageSessionsChart data={userAverageSessions.data.sessions} />
+    </section>
   );
 }
 
