@@ -1,46 +1,33 @@
-.navbarTEST {
+nav.header {
   display: flex;
-  flex-direction: row; 
-  justify-content: space-around; 
   align-items: center;
-  padding-top: 29px;
-    margin-left: 10%;
-   
-    a {
-      text-decoration: none;
-      color: inherit;      
-    }
-
-    
-   
-  }
-  
-  
-.navbar{
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100%;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+  background-color: black;
   height: 91px;
-  background: #020203;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  color: $white;
-  
+  width: 100%;
   z-index: 1;
-  img{
-    position:fixed;
-    left: 29px;
-    top: 19px;
-    padding-right: 19px;
-    width: 57.196px;
-    height: 57.703px;
-    
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+  img {
+    height: 61px;
+    margin-left: 28px;
   }
-  .logo-title{
-    color: $red;
-    left: 96px;
-    position: fixed;
-    top: 29px;
+
+  div {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+
+    a {
+      color: white;
+      text-decoration: none;
+      padding: 20px 20px;
+    }
   }
 }
-  

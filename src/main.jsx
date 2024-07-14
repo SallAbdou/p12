@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Home from './pages/Home.jsx'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import UserPage from './pages/UserPage.jsx';
@@ -20,8 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <Header />
     <Routes>
-    <Route path="/:id" element={<UserPage />} /> {/* Nouvelle route pour UserPage */}
-      <Route path="/:id" element={<Home></Home>}></Route>
+      <Route path="/:id" element={<UserPage />} />
     </Routes>
     <Footer />
   </Router>

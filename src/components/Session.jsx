@@ -1,50 +1,97 @@
-import PropTypes from 'prop-types';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer,  } from 'recharts';
+import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer, Rectangle, YAxis } from 'recharts'
 import '../styles/Session.scss';
 
 
-const AverageSessionsChart = ({ data }) => {
-    // Pour les jours de la semaine
-    const daysOfWeek = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+const AverageSessions = ({ data }) => {
+    const weekDays = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
+
+    console.log(data)
+
+
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{
+                        backgroundColor: '#FFFFFF',
+                        color: '#000000',
+                        fontSize: '8px',
+                        fontWeight: '500',
+                        textAlign: 'center',
+                        lineHeight: '24px',
+                        fontStyle: 'normal',
+                        width: '39px',
+                        height: '25px',
+                        borderColor: 'transparent',
+                    }}
+                >
+                    <p className="label">{`${payload[0].value} min`}</p>
+                </div>
+            )
+        }
+
+        return null
+    }
+
+    const CustomCursor = ({ points }) => {
+        return (
+            <Rectangle
+                fill="#000000"
+                opacity={0.2}
+                x={points[1].x}
+                width={1000}
+                height={700}
+            />
+        );
+    };
 
     return (
-        <div className="average-sessions-chart">
-            <h2>Durée moyenne des sessions</h2>
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                        dataKey="day" 
-                        tickFormatter={(dayIndex) => daysOfWeek[dayIndex - 1]}  // Ajustement pour commencer à 0
-                        tick={{ fill: '#8884d8', fontSize: 12 }}
-                    />
-                    <YAxis 
-                        domain={['auto', 'auto']} 
-                        tick={{ fill: '#8884d8', fontSize: 12 }}
-                    />
-                    <Tooltip 
-                        contentStyle={{ backgroundColor: '#F00', borderColor: '#ddd' }}
-                    />
-                    <Line 
-                        type="monotone" 
-                        dataKey="sessionLength" 
-                        stroke="#F00" 
-                        strokeWidth={2} 
-                        dot={false}
-                    />
-                </LineChart>
-            </ResponsiveContainer>
-        </div>
-    );
-};
+        <ResponsiveContainer
+            className="average-sessions"
+            width="100%"
+            height="100%"
+        >
+            <LineChart
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <XAxis
+                    dataKey="day"
+                    type="number"
+                    domain={[1, 7]}
+                    tickCount="7"
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) => weekDays[value - 1]}
+                    tick={{ fill: 'white', fontSize: '12px' }}
+                    tickMargin={0}
+                />
+                <YAxis hide={true} padding={{ top: 80, bottom: 40 }} />
+                <Tooltip
+                    content={<CustomTooltip />}
+                    cursor={<CustomCursor />}
+                    wrapperStyle={{ outline: 'none' }}
+                />
+                <Line
+                    type="natural"
+                    dataKey="sessionLength"
+                    dot={false}
+                    stroke="#FFFFFF"
+                    strokeWidth={2}
+                    activeDot={{ r: 4 }}
+                    legendType="none"
+                />
+            </LineChart>
+        </ResponsiveContainer>
+    )
+}
 
-AverageSessionsChart.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            day: PropTypes.number.isRequired, 
-            sessionLength: PropTypes.number.isRequired
-        })
-    ).isRequired
-};
-
-export default AverageSessionsChart;
+export default AverageSessions
