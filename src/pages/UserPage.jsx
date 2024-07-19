@@ -2,7 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import ActivityChart from '../components/ActivityChart';
 import AverageSessionsChart from '../components/Session';
-import { getActivityByUserId, getAverageSessionsByUserId, getUserByUserId } from '../utils/apiHandler';
+import PerformanceChart from '../components/PerformanceChart';
+import ObjectifChart from '../components/ObjectifChart';
+import { getActivityByUserId, getAverageSessionsByUserId, getUserByUserId,getPerformanceByUserId, getObjectifByUserId} from '../utils/apiHandler';
 import { useGet } from '../utils/hooks';
 
 function UserPage() {
@@ -10,6 +12,9 @@ function UserPage() {
   const userActivity = useGet(getActivityByUserId(id));
   const userAverageSessions = useGet(getAverageSessionsByUserId(id));
   const userInfo = useGet(getUserByUserId(id))
+  const userPerformance = useGet(getPerformanceByUserId(id));
+  const userObjectif = useGet(getObjectifByUserId(id)); 
+
 
   if (userInfo.error || userActivity.error || userAverageSessions.error) {
     return <p>No user data found.</p>;
@@ -32,6 +37,13 @@ function UserPage() {
             <div className="average-sessions">
               <span>Durée moyenne des sessions</span>
               <AverageSessionsChart data={userAverageSessions.data.sessions} />
+            </div>
+            <div className="performance-chart">
+              <PerformanceChart data={userPerformance.data.data} />
+            </div>
+             <div className="objectif">
+              <span>Objectif</span>
+              <ObjectifChart data={userObjectif.data} />
             </div>
           </div>
         </div>
