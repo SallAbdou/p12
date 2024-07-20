@@ -61,14 +61,46 @@
                 z-index: 2;
             }
         }
-    }
 
-    .key-data {
-        min-width: 258px;
-        width: 20%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 680px;
+        .performance-chart {
+            min-width: 354px;
+            width: 30%;
+            height: 300px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.0212249);
+            margin-bottom: 50px;
+        }
+
+        .objectif {
+            min-width: 354px;
+            width: 30%;
+            height: 300px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.0212249);
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+
+            span {
+                position: absolute;
+                font-style: normal;
+                font-weight: 500;
+                font-size: 15px;
+                line-height: 24px;
+                left: 50px;
+                top: 10px;
+            }
+        }
     }
+}
+
+.key-data {
+    min-width: 258px;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 680px;
 }

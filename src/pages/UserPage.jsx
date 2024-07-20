@@ -4,8 +4,9 @@ import ActivityChart from '../components/ActivityChart';
 import AverageSessionsChart from '../components/Session';
 import PerformanceChart from '../components/PerformanceChart';
 import ObjectifChart from '../components/ObjectifChart';
-import { getActivityByUserId, getAverageSessionsByUserId, getUserByUserId,getPerformanceByUserId, getObjectifByUserId} from '../utils/apiHandler';
+import { getActivityByUserId, getAverageSessionsByUserId, getUserByUserId, getPerformanceByUserId } from '../utils/apiHandler';
 import { useGet } from '../utils/hooks';
+import Keydata from '../components/Keydata'
 
 function UserPage() {
   const { id } = useParams();
@@ -13,10 +14,9 @@ function UserPage() {
   const userAverageSessions = useGet(getAverageSessionsByUserId(id));
   const userInfo = useGet(getUserByUserId(id))
   const userPerformance = useGet(getPerformanceByUserId(id));
-  const userObjectif = useGet(getObjectifByUserId(id)); 
 
 
-  if (userInfo.error || userActivity.error || userAverageSessions.error) {
+  if (userInfo.error || userActivity.error || userAverageSessions.error || userPerformance.error) {
     return <p>No user data found.</p>;
   }
 
@@ -39,13 +39,16 @@ function UserPage() {
               <AverageSessionsChart data={userAverageSessions.data.sessions} />
             </div>
             <div className="performance-chart">
-              <PerformanceChart data={userPerformance.data.data} />
+              <PerformanceChart data={userPerformance.data} />
             </div>
-             <div className="objectif">
+            <div className="objectif">
               <span>Objectif</span>
-              <ObjectifChart data={userObjectif.data} />
+              <ObjectifChart data={userInfo.data.score} />
             </div>
           </div>
+        </div>
+        <div className="key-data">
+          {userInfo.isLoading ? <div>loading...</div> : userInfo?.data.keyDatas.map(item => <Keydata key={item.name} data={item} />)}
         </div>
       </div>
 
