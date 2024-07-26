@@ -1,6 +1,9 @@
 .key-data-button {
     display: flex;
     padding: 32px;
+    border-radius: 5px;
+    background: $grey;
+    box-shadow: 0px 2px 4px 0px $container;
 
     .key-data-img-container {
         width: 60px;
@@ -32,7 +35,7 @@
         .key-data-name {
             font-size: 14px;
             font-weight: 500;
-            color: rgba(116, 121, 140, 1);
+            color: $key-data-name;
         }
     }
 }

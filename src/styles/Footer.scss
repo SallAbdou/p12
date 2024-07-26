@@ -6,13 +6,13 @@ nav.footer {
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
-  background-color: black;
+  background-color: $background-black;
   height: 100%;
   width: 117px;
   left: 0;
   top: 0;
   position: fixed;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: $background-shadow;
 
   div {
     display: flex;
@@ -22,7 +22,7 @@ nav.footer {
     height: 316px;
 
     button {
-      background-color: white;
+      background-color: $white;
       border-radius: 5px;
       width: 64px;
       height: 64px;
@@ -39,7 +39,7 @@ nav.footer {
   }
 
   p {
-    color: white;
+    color: $white;
     font-style: normal;
     font-weight: 500;
     font-size: 12px;

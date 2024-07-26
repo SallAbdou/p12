@@ -9,6 +9,7 @@ div.objectif {
                 align-content: center;
                 justify-content: center;
                 height: 100%;
+                
 
                 span.score {
                     font-size: 26px;
@@ -17,7 +18,7 @@ div.objectif {
 
                 p.description {
                     font-size: 16px;
-                    color: rgba(116, 121, 140, 1);
+                    color: $score;
                     padding-left: 10%;
                     padding-right: 10%;
                     line-height: 26px;
