@@ -1,34 +1,54 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ActivityChart from '../components/ActivityChart';
 import AverageSessionsChart from '../components/Session';
 import PerformanceChart from '../components/PerformanceChart';
 import ObjectifChart from '../components/ObjectifChart';
 import { getActivityByUserId, getAverageSessionsByUserId, getUserByUserId, getPerformanceByUserId } from '../utils/apiHandler';
-import { useGet } from '../utils/hooks';
 import Keydata from '../components/Keydata'
 
 
 function UserPage() {
   const { id } = useParams();
 
-  const userActivity = useGet(getActivityByUserId(id));
-  const userAverageSessions = useGet(getAverageSessionsByUserId(id));
-  const userInfo = useGet(getUserByUserId(id))
-  const userPerformance = useGet(getPerformanceByUserId(id));
+  const [user, setUser] = useState({});
+  const [activity, setActivity] = useState([]);
+  const [averageSessions, setAverageSessions] = useState([]);
+  const [performance, setPerformance] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    setLoading(true)
+    setError(null)
+    Promise.all([
+      getActivityByUserId(id),
+      getAverageSessionsByUserId(id),
+      getUserByUserId(id),
+      getPerformanceByUserId(id)
+    ])
+      .then(([userActivity, userSessions, userData, userPerformance]) => {
+        setUser(userData);
+        setActivity(userActivity);
+        setAverageSessions(userSessions);
+        setPerformance(userPerformance);
+      })
+      .catch(() => {
+        setError(new Error('API is not available. Please try again later.'));
+      }).finally(() => setLoading(false))
 
-  if (userInfo.error || userActivity.error || userAverageSessions.error || userPerformance.error) {
-    return <p className='error-message'>Oups !!! Il y a une erreur.</p>;
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  if (isLoading) return <div className="loader">Chargement...</div>;
+  if (error) return <p className="error-message">{error.message}</p>;
 
   return (
     <section>
       <div>
         <div className="profile-header">
           <span>Bonjour </span>
-          <span>{userInfo?.data.firstName}</span>
+          <span>{user?.firstName}</span>
           <div>Félicitation ! Vous avez explosé vos objectifs hier 👏</div>
         </div>
 
@@ -36,23 +56,23 @@ function UserPage() {
           <div className="charts-layout">
             <div className="charts">
               <div className='activity'>
-                <ActivityChart data={userActivity?.data.sessions} />
+                <ActivityChart data={activity?.sessions} />
               </div>
               <div className="average-sessions">
                 <span>Durée moyenne des sessions</span>
-                <AverageSessionsChart data={userAverageSessions?.data.sessions} />
+                <AverageSessionsChart data={averageSessions?.sessions} />
               </div>
               <div className="performance-chart">
-                <PerformanceChart data={userPerformance?.data} />
+                <PerformanceChart data={performance} />
               </div>
               <div className="objectif">
                 <span>Objectif</span>
-                <ObjectifChart data={userInfo?.data.score} />
+                <ObjectifChart data={user?.score} />
               </div>
             </div>
           </div>
           <div className="key-data">
-            {userInfo.isLoading ? <div>loading...</div> : userInfo?.data.keyDatas.map(item => <Keydata key={item.name} data={item} />)}
+            {user?.keyDatas.map(item => <Keydata key={item.name} data={item} />)}
           </div>
         </div>
 

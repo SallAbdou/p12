@@ -5,9 +5,6 @@ import '../styles/Session.scss';
 const AverageSessions = ({ data }) => {
     const weekDays = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
 
-    console.log(data)
-
-
     const CustomTooltip = ({ active, payload }) => {
         if (active && payload && payload.length) {
             return (
