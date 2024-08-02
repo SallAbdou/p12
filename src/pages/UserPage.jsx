@@ -40,7 +40,7 @@ function UserPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (isLoading) return <div className="loader">Chargement...</div>;
+  if (isLoading) return <p className="loader">Chargement...</p>;
   if (error) return <p className="error-message">{error.message}</p>;
 
   return (

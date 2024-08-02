@@ -3,6 +3,7 @@ import AverageSessions from "../models/AverageSessions";
 import User from "../models/User";
 import Performance from "../models/Performance";
 
+// eslint-disable-next-line no-undef
 const BASE_URL = `${URL_API}/user`;
 const URL_USER = id => `${BASE_URL}/${id}`
 const URL_ACTIVITY = id => `${BASE_URL}/${id}/activity`;
